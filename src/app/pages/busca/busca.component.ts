@@ -1,3 +1,4 @@
+import { Passagem } from 'src/app/core/types/type';
 import { PassagensService } from './../../core/services/passagens.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BuscaComponent implements OnInit {
 
-  constructor(private passagensService : PassagensService) { }
+  passagens: Passagem[] = [];
+
+  constructor(private passagensService: PassagensService) { }
 
   ngOnInit() {
     const buscaPadrao = {
@@ -19,6 +22,13 @@ export class BuscaComponent implements OnInit {
       passageirosAdultos: 1,
       tipo: "Executiva"
     }
-     this.passagensService.getPassagens(buscaPadrao).subscribe(res => console.log(res));
+    this.passagensService.getPassagens(buscaPadrao).subscribe(
+        (res) => 
+        {
+          this.passagens = res.resultado;
+          console.log("Passagens", this.passagens);
+        }, (error) => {
+          console.log(error);
+        });
   }
 }
